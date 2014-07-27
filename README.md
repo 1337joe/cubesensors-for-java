@@ -37,3 +37,5 @@ System.out.print(api.getCurrent(devices.get(0).getUid()));
 I'm just starting work on my app that will use this library.  My tests indicate that the library works, but I may make changes for usability as I start using it more if I come across any major issues.
 
 The CubeSensors API is still in development.  As far as I can tell everything in this library currently works, but updates may be needed if the API itself changes.
+
+I'm using the Java 8 java.time package for dates/times.  If there's demand it shoudn't be hard to put together a branch that either uses the old time classes or Joda-Time.
