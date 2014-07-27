@@ -1,6 +1,9 @@
 package com.w3asel.cubesensors.api.v1;
 
 import java.io.IOException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashSet;
@@ -31,20 +34,32 @@ import com.w3asel.cubesensors.api.v1.json.JsonSpanResponse;
 import com.w3asel.cubesensors.api.v1.json.StateParser;
 import com.w3asel.cubesensors.auth.CubeSensorsAuthApi;
 
+/**
+ * This class provides methods that map to each of the queries made available by
+ * the <a href="https://my.cubesensors.com/docs">CubeSensors API</a>.
+ *
+ * @author Joe
+ */
 public class CubeSensorsApiV1 {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(CubeSensorsApiV1.class);
 
 	private static final String RESOURCES_ROOT = "http://api.cubesensors.com/v1/";
 
+	/** mapper for parsing json */
 	private static final ObjectMapper MAPPER = new ObjectMapper();
 
+	/** service to handle signing API queries */
 	private static OAuthService service = new ServiceBuilder()
 			.provider(CubeSensorsAuthApi.class)
 			.apiKey(CubeSensorsProperties.getAppKey())
 			.apiSecret(CubeSensorsProperties.getAppSecret())
 			.signatureType(SignatureType.QueryString).build();
 
+	/**
+	 * Rebuilds the {@code service} object with debug turned on (defaulted to
+	 * {@code System.out})
+	 */
 	public static void debug() {
 		service = new ServiceBuilder().debug()
 				.provider(CubeSensorsAuthApi.class)
@@ -53,30 +68,30 @@ public class CubeSensorsApiV1 {
 				.signatureType(SignatureType.QueryString).build();
 	}
 
-	/**
-	 * Creates an api instance from the provided access token.
-	 */
-	public static CubeSensorsApiV1 fromAccessToken(final Token accessToken) {
-		return new CubeSensorsApiV1(accessToken);
-	}
-
 	private final Token accessToken;
 
-	private CubeSensorsApiV1(final Token accessToken) {
+	/**
+	 * @param accessToken
+	 *            the access token to be used when querying the API
+	 */
+	public CubeSensorsApiV1(final Token accessToken) {
 		this.accessToken = accessToken;
 	}
 
+	/**
+	 * Parses the results of a query and handles any errors.
+	 */
 	private <T> T parseQuery(final String response, final Class<T> responseClass) {
 		T queryResponse;
 		try {
 			/*
 			 * Possible exceptions:
-			 *
+			 * 
 			 * IOException - if the underlying input source has problems during
 			 * parsing
-			 *
+			 * 
 			 * JsonParseException - if parser has problems parsing content
-			 *
+			 * 
 			 * JsonMappingException - if the parser does not have any more
 			 * content to map (note: Json "null" value is considered content;
 			 * enf-of-stream not)
@@ -102,6 +117,10 @@ public class CubeSensorsApiV1 {
 		return queryResponse;
 	}
 
+	/**
+	 * Converts the {@link JsonDevice} object into a {@link Device} and logs any
+	 * missing/extra fields to debug.
+	 */
 	private Device extractDevice(final JsonDevice device) {
 		final EnumMap<ExtraMapping, String> extras = new EnumMap<>(
 				ExtraMapping.class);
@@ -123,6 +142,9 @@ public class CubeSensorsApiV1 {
 		return new Device(device, extras);
 	}
 
+	/**
+	 * Queries for the list of accessible devices.
+	 */
 	public List<Device> getDevices() {
 		final String queryUrl = RESOURCES_ROOT + "devices/";
 		LOGGER.trace("Querying: {}", queryUrl);
@@ -149,6 +171,9 @@ public class CubeSensorsApiV1 {
 		return devices;
 	}
 
+	/**
+	 * Queries for the description of a device.
+	 */
 	public Device getDevice(final String uid) {
 		final String queryUrl = RESOURCES_ROOT + "devices/" + uid;
 		LOGGER.trace("Querying: {}", queryUrl);
@@ -170,6 +195,9 @@ public class CubeSensorsApiV1 {
 		return extractDevice(queryResponse.device);
 	}
 
+	/**
+	 * Queries for the current state of a cube.
+	 */
 	public State getCurrent(final String uid) {
 		final String queryUrl = RESOURCES_ROOT + "devices/" + uid + "/current";
 		LOGGER.trace("Querying: {}", queryUrl);
@@ -194,11 +222,47 @@ public class CubeSensorsApiV1 {
 		return states.get(0);
 	}
 
-	public List<State> getSpan(final String uid) {
+	/**
+	 * Queries for a list of states over the time span specified. Leaving a
+	 * field {@code null} will default to the API defaults.
+	 *
+	 * @param uid
+	 *            the UID of the device to request data for
+	 * @param start
+	 *            the query start time
+	 * @param end
+	 *            the query end time
+	 * @param resolution
+	 *            the resolution in minutes
+	 * @return a list of all states returned by the API
+	 */
+	public List<State> getSpan(final String uid, final ZonedDateTime start,
+			final ZonedDateTime end, final Integer resolution) {
 		final String queryUrl = RESOURCES_ROOT + "devices/" + uid + "/span";
 		LOGGER.trace("Querying: {}", queryUrl);
 
 		final OAuthRequest request = new OAuthRequest(Verb.GET, queryUrl);
+
+		if (start != null) {
+			final ZonedDateTime startUtc = start.withZoneSameInstant(
+					ZoneId.of("Z")).truncatedTo(ChronoUnit.SECONDS);
+			request.addQuerystringParameter("start", startUtc.toString());
+			LOGGER.trace("Adding querystring parameter {}={}", "start",
+					startUtc);
+		}
+		if (end != null) {
+			final ZonedDateTime endUtc = end
+					.withZoneSameInstant(ZoneId.of("Z")).truncatedTo(
+							ChronoUnit.SECONDS);
+			request.addQuerystringParameter("end", endUtc.toString());
+			LOGGER.trace("Adding querystring parameter {}={}", "end", endUtc);
+		}
+		if (resolution != null) {
+			request.addQuerystringParameter("resolution", resolution.toString());
+			LOGGER.trace("Adding querystring parameter {}={}", "resolution",
+					resolution);
+		}
+
 		service.signRequest(accessToken, request);
 		final Response response = request.send();
 		LOGGER.trace("Response: {}", response.getBody());

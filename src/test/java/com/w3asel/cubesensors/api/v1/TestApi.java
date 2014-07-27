@@ -1,21 +1,22 @@
 package com.w3asel.cubesensors.api.v1;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.w3asel.cubesensors.CubeSensorsTestProperties;
+import com.w3asel.cubesensors.auth.TestAuth;
 
 /**
  * These tests demonstrate retrieving data from the API. Because the data on the
  * API can't be controlled the tests are assumed to pass if they return data
  * (meaning data was retrieved and parsed).
  *
- * Due to the volume of data it requests {@link TestApi#testGetSpan()} should be
- * used sparingly.
+ * Note: you must have an access token set in cubesensors.test.properties for
+ * these tests to run, see {@link TestAuth}.
  *
  * @author Joe
  */
@@ -26,8 +27,7 @@ public class TestApi {
 
 	@BeforeClass
 	public static void initApi() {
-		api = CubeSensorsApiV1.fromAccessToken(CubeSensorsTestProperties
-				.getAccessToken());
+		api = new CubeSensorsApiV1(CubeSensorsTestProperties.getAccessToken());
 
 		devices = api.getDevices();
 	}
@@ -62,12 +62,33 @@ public class TestApi {
 		}
 	}
 
-	@Ignore
 	@Test
-	public void testGetSpan() {
-		final List<State> span = api.getSpan(devices.get(0).getUid());
+	public void testGetSpanDefaults() {
+		final List<State> span = api.getSpan(devices.get(0).getUid(), null,
+				null, null);
 		Assert.assertNotNull(span);
 		Assert.assertFalse(span.isEmpty());
+
+		// expecting 24 hours at 1 min resolution with some buffer for missed
+		// minutes
+		Assert.assertTrue(1400 < span.size());
+
+		System.out.println(span);
+	}
+
+	@Test
+	public void testGetSpan() {
+		final ZonedDateTime start = ZonedDateTime.now().minusHours(6);
+		final ZonedDateTime end = ZonedDateTime.now();
+		final Integer resolution = 30;
+
+		final List<State> span = api.getSpan(devices.get(0).getUid(), start,
+				end, resolution);
+		Assert.assertNotNull(span);
+		Assert.assertFalse(span.isEmpty());
+
+		// expecting 6 hours at 30 min resolution
+		Assert.assertEquals(12, span.size());
 
 		System.out.println(span);
 	}

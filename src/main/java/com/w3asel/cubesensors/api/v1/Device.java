@@ -5,6 +5,11 @@ import java.util.EnumMap;
 import com.w3asel.cubesensors.api.v1.json.JsonDevice;
 import com.w3asel.cubesensors.api.v1.json.JsonDevice.ExtraMapping;
 
+/**
+ * Encapsulates all the data returned by the device and devices queries.
+ *
+ * @author Joe
+ */
 public class Device {
 	public enum Type {
 		cube,

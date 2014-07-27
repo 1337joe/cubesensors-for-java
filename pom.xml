@@ -4,7 +4,7 @@
 
 	<groupId>com.w3asel</groupId>
 	<artifactId>cubesensors-for-java</artifactId>
-	<version>0.1.0</version>
+	<version>0.9.0</version>
 	<packaging>jar</packaging>
 
 	<name>cubesensors-for-java</name>
@@ -67,12 +67,6 @@
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
-			</plugin>
-
-			<!-- Surefire plugin for unit testing -->
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.16</version>
 			</plugin>
 		</plugins>
 	</build>
