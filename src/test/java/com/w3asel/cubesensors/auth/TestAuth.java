@@ -58,7 +58,6 @@ public class TestAuth {
 	public void testRequestToken() {
 		final Token requestToken = service.getRequestToken();
 
-		// newline to space away from the service debug output
 		System.out.println();
 
 		System.out
@@ -84,6 +83,8 @@ public class TestAuth {
 		final Token accessToken = service
 				.getAccessToken(requestToken, verifier);
 
+		System.out.println();
+
 		System.out
 				.println("Copy these values into cubesensors.test.properties:");
 		System.out.println("accessToken.token=" + accessToken.getToken());
@@ -99,6 +100,8 @@ public class TestAuth {
 				"http://api.cubesensors.com/v1/devices/");
 		service.signRequest(accessToken, request);
 		final Response response = request.send();
+
+		System.out.println();
 
 		System.out.println("Request succeeded");
 		System.out.println(response.getBody());
