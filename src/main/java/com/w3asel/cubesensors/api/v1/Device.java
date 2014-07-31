@@ -21,15 +21,10 @@ public class Device {
 		live,
 	}
 
-	public enum State {
-		active,
-	}
-
 	public final Type type;
 	public final String uid;
 	public final String name;
 	public final RoomType roomType;
-	public final State state;
 
 	public Device(final JsonDevice device,
 			final EnumMap<ExtraMapping, String> extras) {
@@ -38,8 +33,6 @@ public class Device {
 		this.name = extras.get(ExtraMapping.name);
 		this.roomType = extras.get(ExtraMapping.roomtype) == null ? null
 				: RoomType.valueOf(extras.get(ExtraMapping.roomtype));
-		this.state = extras.get(ExtraMapping.state) == null ? null : State
-				.valueOf(extras.get(ExtraMapping.state));
 	}
 
 	public Type getType() {
@@ -58,10 +51,6 @@ public class Device {
 		return roomType;
 	}
 
-	public State getState() {
-		return state;
-	}
-
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
@@ -76,10 +65,6 @@ public class Device {
 		if (roomType != null) {
 			sb.append(", ");
 			sb.append("roomType:").append(roomType);
-		}
-		if (state != null) {
-			sb.append(", ");
-			sb.append("state:").append(state);
 		}
 		sb.append(")");
 		return sb.toString();

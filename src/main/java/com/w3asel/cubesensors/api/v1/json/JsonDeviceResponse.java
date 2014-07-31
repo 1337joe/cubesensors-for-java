@@ -1,10 +1,13 @@
 package com.w3asel.cubesensors.api.v1.json;
 
-import java.util.Map;
-
+/**
+ * /v1/devices/000D6F0003118A16<br/>
+ * &#123;<br/>
+ * &nbsp;&nbsp;"ok": true,<br/>
+ * &nbsp;&nbsp;"device": {@link JsonDevice}<br/>
+ * &#125;
+ */
 public class JsonDeviceResponse {
-	public double duration;
 	public boolean ok;
-	public Map<String, String> resources;
 	public JsonDevice device;
 }

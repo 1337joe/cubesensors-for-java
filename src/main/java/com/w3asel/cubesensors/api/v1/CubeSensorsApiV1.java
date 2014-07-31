@@ -86,12 +86,12 @@ public class CubeSensorsApiV1 {
 		try {
 			/*
 			 * Possible exceptions:
-			 * 
+			 *
 			 * IOException - if the underlying input source has problems during
 			 * parsing
-			 * 
+			 *
 			 * JsonParseException - if parser has problems parsing content
-			 * 
+			 *
 			 * JsonMappingException - if the parser does not have any more
 			 * content to map (note: Json "null" value is considered content;
 			 * enf-of-stream not)
@@ -150,6 +150,7 @@ public class CubeSensorsApiV1 {
 		LOGGER.trace("Querying: {}", queryUrl);
 
 		final OAuthRequest request = new OAuthRequest(Verb.GET, queryUrl);
+		request.getHeaders().put("Accept", "application/json");
 		service.signRequest(accessToken, request);
 		final Response response = request.send();
 		LOGGER.trace("Response: {}", response.getBody());
@@ -160,8 +161,7 @@ public class CubeSensorsApiV1 {
 			return null;
 		}
 
-		LOGGER.debug("Retrieved {} devices in {} seconds.",
-				queryResponse.devices.size(), queryResponse.duration);
+		LOGGER.debug("Retrieved {} devices.", queryResponse.devices.size());
 
 		final List<Device> devices = new ArrayList<Device>();
 		for (final JsonDevice device : queryResponse.devices) {
@@ -179,6 +179,7 @@ public class CubeSensorsApiV1 {
 		LOGGER.trace("Querying: {}", queryUrl);
 
 		final OAuthRequest request = new OAuthRequest(Verb.GET, queryUrl);
+		request.getHeaders().put("Accept", "application/json");
 		service.signRequest(accessToken, request);
 		final Response response = request.send();
 		LOGGER.trace("Response: {}", response.getBody());
@@ -189,8 +190,7 @@ public class CubeSensorsApiV1 {
 			return null;
 		}
 
-		LOGGER.debug("Retrieved device {} in {} seconds.",
-				queryResponse.device.uid, queryResponse.duration);
+		LOGGER.debug("Retrieved device {}.", queryResponse.device.uid);
 
 		return extractDevice(queryResponse.device);
 	}
@@ -203,6 +203,7 @@ public class CubeSensorsApiV1 {
 		LOGGER.trace("Querying: {}", queryUrl);
 
 		final OAuthRequest request = new OAuthRequest(Verb.GET, queryUrl);
+		request.getHeaders().put("Accept", "application/json");
 		service.signRequest(accessToken, request);
 		final Response response = request.send();
 		LOGGER.trace("Response: {}", response.getBody());
@@ -242,6 +243,7 @@ public class CubeSensorsApiV1 {
 		LOGGER.trace("Querying: {}", queryUrl);
 
 		final OAuthRequest request = new OAuthRequest(Verb.GET, queryUrl);
+		request.getHeaders().put("Accept", "application/json");
 
 		if (start != null) {
 			final ZonedDateTime startUtc = start.withZoneSameInstant(
