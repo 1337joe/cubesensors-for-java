@@ -41,4 +41,8 @@ public enum CubeSensorsProperties {
 	public static String getAppSecret() {
 		return INSTANCE.properties.getProperty("app.secret");
 	}
+
+	public static String getAppCallbackUrl() {
+		return INSTANCE.properties.getProperty("app.callback.url", "oob");
+	}
 }

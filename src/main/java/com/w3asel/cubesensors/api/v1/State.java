@@ -22,6 +22,7 @@ public class State {
 	public final int voc;
 	public final int light;
 	public final int noise;
+	// TODO noisedba when it's populated
 	public final int battery;
 	public final boolean shake;
 	public final boolean cable;

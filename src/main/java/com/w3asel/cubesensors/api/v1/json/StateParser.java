@@ -29,6 +29,7 @@ public class StateParser {
 		voc,
 		light,
 		noise,
+		noisedba,
 		battery,
 		shake,
 		cable,
@@ -49,7 +50,12 @@ public class StateParser {
 				Arrays.asList(ExpectedLabels.values()));
 		for (int index = 0; index < labels.size(); index++) {
 			final String next = labels.get(index);
-			final ExpectedLabels labelValue = ExpectedLabels.valueOf(next);
+			ExpectedLabels labelValue;
+			try {
+				labelValue = ExpectedLabels.valueOf(next);
+			} catch (IllegalArgumentException e) {
+				labelValue = null;
+			}
 
 			if (labelValue != null) {
 				unusedLabels.remove(labelValue);

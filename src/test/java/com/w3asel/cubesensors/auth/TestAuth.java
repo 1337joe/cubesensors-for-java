@@ -50,7 +50,9 @@ public class TestAuth {
 				.provider(CubeSensorsAuthApi.class)
 				.apiKey(CubeSensorsProperties.getAppKey())
 				.apiSecret(CubeSensorsProperties.getAppSecret())
-				.signatureType(SignatureType.QueryString).build();
+				.callback(CubeSensorsProperties.getAppCallbackUrl())
+				.signatureType(SignatureType.QueryString)
+				.build();
 	}
 
 	@Ignore
