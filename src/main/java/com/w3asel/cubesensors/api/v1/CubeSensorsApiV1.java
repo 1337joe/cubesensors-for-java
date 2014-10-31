@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.scribe.builder.ServiceBuilder;
@@ -35,14 +36,12 @@ import com.w3asel.cubesensors.api.v1.json.StateParser;
 import com.w3asel.cubesensors.auth.CubeSensorsAuthApi;
 
 /**
- * This class provides methods that map to each of the queries made available by
- * the <a href="https://my.cubesensors.com/docs">CubeSensors API</a>.
+ * This class provides methods that map to each of the queries made available by the <a href="https://my.cubesensors.com/docs">CubeSensors API</a>.
  *
  * @author Joe
  */
 public class CubeSensorsApiV1 {
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(CubeSensorsApiV1.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CubeSensorsApiV1.class);
 
 	private static final String RESOURCES_ROOT = "http://api.cubesensors.com/v1/";
 
@@ -50,22 +49,15 @@ public class CubeSensorsApiV1 {
 	private static final ObjectMapper MAPPER = new ObjectMapper();
 
 	/** service to handle signing API queries */
-	private static OAuthService service = new ServiceBuilder()
-			.provider(CubeSensorsAuthApi.class)
-			.apiKey(CubeSensorsProperties.getAppKey())
-			.apiSecret(CubeSensorsProperties.getAppSecret())
-			.signatureType(SignatureType.QueryString).build();
+	private static OAuthService service = new ServiceBuilder().provider(CubeSensorsAuthApi.class).apiKey(CubeSensorsProperties.getAppKey())
+			.apiSecret(CubeSensorsProperties.getAppSecret()).signatureType(SignatureType.QueryString).build();
 
 	/**
-	 * Rebuilds the {@code service} object with debug turned on (defaulted to
-	 * {@code System.out})
+	 * Rebuilds the {@code service} object with debug turned on (defaulted to {@code System.out})
 	 */
 	public static void debug() {
-		service = new ServiceBuilder().debug()
-				.provider(CubeSensorsAuthApi.class)
-				.apiKey(CubeSensorsProperties.getAppKey())
-				.apiSecret(CubeSensorsProperties.getAppSecret())
-				.signatureType(SignatureType.QueryString).build();
+		service = new ServiceBuilder().debug().provider(CubeSensorsAuthApi.class).apiKey(CubeSensorsProperties.getAppKey())
+				.apiSecret(CubeSensorsProperties.getAppSecret()).signatureType(SignatureType.QueryString).build();
 	}
 
 	private final Token accessToken;
@@ -87,20 +79,16 @@ public class CubeSensorsApiV1 {
 			/*
 			 * Possible exceptions:
 			 *
-			 * IOException - if the underlying input source has problems during
-			 * parsing
+			 * IOException - if the underlying input source has problems during parsing
 			 *
 			 * JsonParseException - if parser has problems parsing content
 			 *
-			 * JsonMappingException - if the parser does not have any more
-			 * content to map (note: Json "null" value is considered content;
-			 * enf-of-stream not)
+			 * JsonMappingException - if the parser does not have any more content to map (note: Json "null" value is considered content; enf-of-stream not)
 			 */
 			queryResponse = MAPPER.readValue(response, responseClass);
 		} catch (JsonParseException | JsonMappingException e) {
 			try {
-				final ErrorResponse error = MAPPER.readValue(response,
-						ErrorResponse.class);
+				final ErrorResponse error = MAPPER.readValue(response, ErrorResponse.class);
 
 				LOGGER.error("Query returned an error: {}", error);
 				return null;
@@ -118,12 +106,10 @@ public class CubeSensorsApiV1 {
 	}
 
 	/**
-	 * Converts the {@link JsonDevice} object into a {@link Device} and logs any
-	 * missing/extra fields to debug.
+	 * Converts the {@link JsonDevice} object into a {@link Device} and logs any missing/extra fields to debug.
 	 */
 	private Device extractDevice(final JsonDevice device) {
-		final EnumMap<ExtraMapping, String> extras = new EnumMap<>(
-				ExtraMapping.class);
+		final Map<ExtraMapping, String> extras = new EnumMap<>(ExtraMapping.class);
 		final Set<String> keys = new HashSet<>(device.extra.keySet());
 		for (final ExtraMapping extra : ExtraMapping.values()) {
 			extras.put(extra, device.extra.get(extra.name()));
@@ -131,8 +117,7 @@ public class CubeSensorsApiV1 {
 			if (keys.contains(extra.name())) {
 				keys.remove(extra.name());
 			} else {
-				LOGGER.debug("\"extra\" missing key \"{}\": {}", extra.name(),
-						device.extra.toString());
+				LOGGER.debug("\"extra\" missing key \"{}\": {}", extra.name(), device.extra.toString());
 			}
 		}
 		for (final String key : keys) {
@@ -155,10 +140,9 @@ public class CubeSensorsApiV1 {
 		final Response response = request.send();
 		LOGGER.trace("Response: {}", response.getBody());
 
-		final JsonDevicesResponse queryResponse = parseQuery(
-				response.getBody(), JsonDevicesResponse.class);
+		final JsonDevicesResponse queryResponse = parseQuery(response.getBody(), JsonDevicesResponse.class);
 		if (queryResponse == null) {
-			return null;
+			return new ArrayList<>();
 		}
 
 		LOGGER.debug("Retrieved {} devices.", queryResponse.devices.size());
@@ -184,8 +168,7 @@ public class CubeSensorsApiV1 {
 		final Response response = request.send();
 		LOGGER.trace("Response: {}", response.getBody());
 
-		final JsonDeviceResponse queryResponse = parseQuery(response.getBody(),
-				JsonDeviceResponse.class);
+		final JsonDeviceResponse queryResponse = parseQuery(response.getBody(), JsonDeviceResponse.class);
 		if (queryResponse == null) {
 			return null;
 		}
@@ -208,14 +191,12 @@ public class CubeSensorsApiV1 {
 		final Response response = request.send();
 		LOGGER.trace("Response: {}", response.getBody());
 
-		final JsonCurrentResponse queryResponse = parseQuery(
-				response.getBody(), JsonCurrentResponse.class);
+		final JsonCurrentResponse queryResponse = parseQuery(response.getBody(), JsonCurrentResponse.class);
 		if (queryResponse == null) {
 			return null;
 		}
 
-		final List<State> states = StateParser.parseState(
-				queryResponse.field_list, queryResponse.results);
+		final List<State> states = StateParser.parseState(queryResponse.fieldList, queryResponse.results);
 		// can happen if the cube hasn't reported in recently enough
 		if (states.isEmpty()) {
 			return null;
@@ -224,8 +205,7 @@ public class CubeSensorsApiV1 {
 	}
 
 	/**
-	 * Queries for a list of states over the time span specified. Leaving a
-	 * field {@code null} will default to the API defaults.
+	 * Queries for a list of states over the time span specified. Leaving a field {@code null} will default to the API defaults.
 	 *
 	 * @param uid
 	 *            the UID of the device to request data for
@@ -237,8 +217,7 @@ public class CubeSensorsApiV1 {
 	 *            the resolution in minutes
 	 * @return a list of all states returned by the API
 	 */
-	public List<State> getSpan(final String uid, final ZonedDateTime start,
-			final ZonedDateTime end, final Integer resolution) {
+	public List<State> getSpan(final String uid, final ZonedDateTime start, final ZonedDateTime end, final Integer resolution) {
 		final String queryUrl = RESOURCES_ROOT + "devices/" + uid + "/span";
 		LOGGER.trace("Querying: {}", queryUrl);
 
@@ -246,37 +225,30 @@ public class CubeSensorsApiV1 {
 		request.getHeaders().put("Accept", "application/json");
 
 		if (start != null) {
-			final ZonedDateTime startUtc = start.withZoneSameInstant(
-					ZoneId.of("Z")).truncatedTo(ChronoUnit.SECONDS);
+			final ZonedDateTime startUtc = start.withZoneSameInstant(ZoneId.of("Z")).truncatedTo(ChronoUnit.SECONDS);
 			request.addQuerystringParameter("start", startUtc.toString());
-			LOGGER.trace("Adding querystring parameter {}={}", "start",
-					startUtc);
+			LOGGER.trace("Adding querystring parameter {}={}", "start", startUtc);
 		}
 		if (end != null) {
-			final ZonedDateTime endUtc = end
-					.withZoneSameInstant(ZoneId.of("Z")).truncatedTo(
-							ChronoUnit.SECONDS);
+			final ZonedDateTime endUtc = end.withZoneSameInstant(ZoneId.of("Z")).truncatedTo(ChronoUnit.SECONDS);
 			request.addQuerystringParameter("end", endUtc.toString());
 			LOGGER.trace("Adding querystring parameter {}={}", "end", endUtc);
 		}
 		if (resolution != null) {
 			request.addQuerystringParameter("resolution", resolution.toString());
-			LOGGER.trace("Adding querystring parameter {}={}", "resolution",
-					resolution);
+			LOGGER.trace("Adding querystring parameter {}={}", "resolution", resolution);
 		}
 
 		service.signRequest(accessToken, request);
 		final Response response = request.send();
 		LOGGER.trace("Response: {}", response.getBody());
 
-		final JsonSpanResponse queryResponse = parseQuery(response.getBody(),
-				JsonSpanResponse.class);
+		final JsonSpanResponse queryResponse = parseQuery(response.getBody(), JsonSpanResponse.class);
 		if (queryResponse == null) {
-			return null;
+			return new ArrayList<>();
 		}
 
-		final List<State> states = StateParser.parseState(
-				queryResponse.field_list, queryResponse.results);
+		final List<State> states = StateParser.parseState(queryResponse.fieldList, queryResponse.results);
 
 		LOGGER.debug("Retrieved {} states", states.size());
 

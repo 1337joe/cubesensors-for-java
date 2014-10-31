@@ -9,8 +9,7 @@ public class CubeSensorsAuthApi extends DefaultApi10a {
 
 	private static final String REQUEST_TOKEN_URL = AUTH + "/request_token";
 	private static final String ACCESS_TOKEN_URL = AUTH + "/access_token";
-	private static final String USER_AUTHORIZATION_URL = AUTH
-			+ "/authorize?oauth_token=%s";
+	private static final String USER_AUTHORIZATION_URL = AUTH + "/authorize?oauth_token=%s";
 
 	@Override
 	public String getRequestTokenEndpoint() {

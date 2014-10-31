@@ -12,21 +12,13 @@ import org.slf4j.LoggerFactory;
  *
  * @author Joe
  */
-public enum CubeSensorsProperties {
-	INSTANCE;
-
+public class CubeSensorsProperties {
+	private static final Logger LOGGER = LoggerFactory.getLogger(CubeSensorsProperties.class);
 	private static final String FILE = "cubesensors.properties";
 
-	private final Logger LOGGER = LoggerFactory
-			.getLogger(CubeSensorsProperties.class);
-
-	private Properties properties;
-
-	private CubeSensorsProperties() {
-		properties = new Properties();
-
-		final InputStream is = CubeSensorsProperties.class.getClassLoader()
-				.getResourceAsStream(FILE);
+	private static Properties properties = new Properties();
+	static {
+		final InputStream is = CubeSensorsProperties.class.getClassLoader().getResourceAsStream(FILE);
 		try {
 			properties.load(is);
 		} catch (final IOException e) {
@@ -34,15 +26,22 @@ public enum CubeSensorsProperties {
 		}
 	}
 
+	/** to prevent instantiation of utility class */
+	private CubeSensorsProperties() {
+	}
+
+	/** @return the oAuth app API key for your app */
 	public static String getAppKey() {
-		return INSTANCE.properties.getProperty("app.key");
+		return properties.getProperty("app.key");
 	}
 
+	/** @return the oAuth app API secret for your app */
 	public static String getAppSecret() {
-		return INSTANCE.properties.getProperty("app.secret");
+		return properties.getProperty("app.secret");
 	}
 
+	/** @return the oAuth callback url to direct to after the user registers your app to have access to their data */
 	public static String getAppCallbackUrl() {
-		return INSTANCE.properties.getProperty("app.callback.url", "oob");
+		return properties.getProperty("app.callback.url", "oob");
 	}
 }

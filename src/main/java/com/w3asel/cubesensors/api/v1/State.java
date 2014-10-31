@@ -8,13 +8,14 @@ import com.w3asel.cubesensors.api.v1.format.Signal;
 import com.w3asel.cubesensors.api.v1.format.Temperature;
 
 /**
- * Contains all state variables as returned by the API. No conversions to
- * displayable formats are made when populating this object, but formatters are
- * available in com.w3asel.cubesensors.api.v1.format.
+ * Contains all state variables as returned by the API. No conversions to displayable formats are made when populating this object, but formatters are available
+ * in com.w3asel.cubesensors.api.v1.format.
  *
  * @author Joe
  */
 public class State {
+	private static final double TO_PERCENT = 1 / 100d;
+
 	public final ZonedDateTime time;
 	public final int temp;
 	public final int pressure;
@@ -29,10 +30,8 @@ public class State {
 	public final int vocResistance;
 	public final int rssi;
 
-	public State(final ZonedDateTime time, final int temp, final int pressure,
-			final int humidity, final int voc, final int light,
-			final int noise, final int battery, final boolean shake,
-			final boolean cable, final int vocResistance, final int rssi) {
+	public State(final ZonedDateTime time, final int temp, final int pressure, final int humidity, final int voc, final int light, final int noise,
+			final int battery, final boolean shake, final boolean cable, final int vocResistance, final int rssi) {
 		this.time = time;
 		this.temp = temp;
 		this.pressure = pressure;
@@ -47,12 +46,59 @@ public class State {
 		this.rssi = rssi;
 	}
 
+	public ZonedDateTime getTime() {
+		return time;
+	}
+
+	public int getTemp() {
+		return temp;
+	}
+
+	public int getPressure() {
+		return pressure;
+	}
+
+	public int getHumidity() {
+		return humidity;
+	}
+
+	public int getVoc() {
+		return voc;
+	}
+
+	public int getLight() {
+		return light;
+	}
+
+	public int getNoise() {
+		return noise;
+	}
+
+	public int getBattery() {
+		return battery;
+	}
+
+	public boolean isShake() {
+		return shake;
+	}
+
+	public boolean isCable() {
+		return cable;
+	}
+
+	public int getVocResistance() {
+		return vocResistance;
+	}
+
+	public int getRssi() {
+		return rssi;
+	}
+
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("(");
-		sb.append(time.withZoneSameInstant(ZoneId.systemDefault()))
-				.append(": ");
+		sb.append(time.withZoneSameInstant(ZoneId.systemDefault())).append(": ");
 		sb.append(Temperature.toF(temp)).append(" F");
 		sb.append(", ");
 		sb.append(Pressure.toInHg(pressure)).append(" in Hg");
@@ -65,7 +111,7 @@ public class State {
 		sb.append(", ");
 		sb.append(noise).append(" RMS");
 		sb.append(", ");
-		sb.append(battery / 100d).append(" %");
+		sb.append(battery * TO_PERCENT).append(" %");
 		if (shake) {
 			sb.append(", shaken");
 		}

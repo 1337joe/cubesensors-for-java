@@ -1,6 +1,6 @@
 package com.w3asel.cubesensors.api.v1;
 
-import java.util.EnumMap;
+import java.util.Map;
 
 import com.w3asel.cubesensors.api.v1.json.JsonDevice;
 import com.w3asel.cubesensors.api.v1.json.JsonDevice.ExtraMapping;
@@ -26,13 +26,11 @@ public class Device {
 	public final String name;
 	public final RoomType roomType;
 
-	public Device(final JsonDevice device,
-			final EnumMap<ExtraMapping, String> extras) {
+	public Device(final JsonDevice device, final Map<ExtraMapping, String> extras) {
 		this.type = device.type;
 		this.uid = device.uid;
 		this.name = extras.get(ExtraMapping.name);
-		this.roomType = extras.get(ExtraMapping.roomtype) == null ? null
-				: RoomType.valueOf(extras.get(ExtraMapping.roomtype));
+		this.roomType = extras.get(ExtraMapping.roomtype) == null ? null : RoomType.valueOf(extras.get(ExtraMapping.roomtype));
 	}
 
 	public Type getType() {
