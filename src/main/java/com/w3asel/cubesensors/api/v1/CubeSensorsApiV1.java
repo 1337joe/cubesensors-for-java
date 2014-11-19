@@ -44,6 +44,8 @@ public class CubeSensorsApiV1 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CubeSensorsApiV1.class);
 
 	private static final String RESOURCES_ROOT = "http://api.cubesensors.com/v1/";
+	private static final String MEDIA_TYPE_APPLICATION_JSON = "application/json";
+	private static final String HTTP_HEADER_ACCEPT = "Accept";
 
 	/** mapper for parsing json */
 	private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -78,11 +80,11 @@ public class CubeSensorsApiV1 {
 		try {
 			/*
 			 * Possible exceptions:
-			 * 
+			 *
 			 * IOException - if the underlying input source has problems during parsing
-			 * 
+			 *
 			 * JsonParseException - if parser has problems parsing content
-			 * 
+			 *
 			 * JsonMappingException - if the parser does not have any more content to map (note: Json "null" value is considered content; enf-of-stream not)
 			 */
 			queryResponse = MAPPER.readValue(response, responseClass);
@@ -133,7 +135,7 @@ public class CubeSensorsApiV1 {
 		LOGGER.trace("Querying: {}", queryUrl);
 
 		final OAuthRequest request = new OAuthRequest(Verb.GET, queryUrl);
-		request.getHeaders().put("Accept", "application/json");
+		request.getHeaders().put(HTTP_HEADER_ACCEPT, MEDIA_TYPE_APPLICATION_JSON);
 		service.signRequest(accessToken, request);
 		final Response response = request.send();
 		LOGGER.trace("Response: {}", response.getBody());
@@ -163,7 +165,7 @@ public class CubeSensorsApiV1 {
 		LOGGER.trace("Querying: {}", queryUrl);
 
 		final OAuthRequest request = new OAuthRequest(Verb.GET, queryUrl);
-		request.getHeaders().put("Accept", "application/json");
+		request.getHeaders().put(HTTP_HEADER_ACCEPT, MEDIA_TYPE_APPLICATION_JSON);
 		service.signRequest(accessToken, request);
 		final Response response = request.send();
 		LOGGER.trace("Response: {}", response.getBody());
@@ -188,7 +190,7 @@ public class CubeSensorsApiV1 {
 		LOGGER.trace("Querying: {}", queryUrl);
 
 		final OAuthRequest request = new OAuthRequest(Verb.GET, queryUrl);
-		request.getHeaders().put("Accept", "application/json");
+		request.getHeaders().put(HTTP_HEADER_ACCEPT, MEDIA_TYPE_APPLICATION_JSON);
 		service.signRequest(accessToken, request);
 		final Response response = request.send();
 		LOGGER.trace("Response: {}", response.getBody());
@@ -224,7 +226,7 @@ public class CubeSensorsApiV1 {
 		LOGGER.trace("Querying: {}", queryUrl);
 
 		final OAuthRequest request = new OAuthRequest(Verb.GET, queryUrl);
-		request.getHeaders().put("Accept", "application/json");
+		request.getHeaders().put(HTTP_HEADER_ACCEPT, MEDIA_TYPE_APPLICATION_JSON);
 
 		if (start != null) {
 			final ZonedDateTime startUtc = start.withZoneSameInstant(ZoneId.of("Z")).truncatedTo(ChronoUnit.SECONDS);
