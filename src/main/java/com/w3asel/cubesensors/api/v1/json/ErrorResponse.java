@@ -8,8 +8,11 @@ import java.util.List;
  * @author Joe
  */
 public class ErrorResponse {
+	/** response status */
 	public boolean ok;
+	/** the http error code */
 	public int code;
+	/** the error messages thrown */
 	public List<String> errors;
 
 	@Override

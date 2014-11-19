@@ -88,6 +88,13 @@ public class StateParser {
 		return new State(time, temp, pressure, humidity, voc, light, noise, battery, shake, cable, vocResistance, rssi);
 	}
 
+	/**
+	 * @param labels
+	 *            the list of labels returned by the query
+	 * @param values
+	 *            the list of lists of values to map to those labels
+	 * @return the decoded states
+	 */
 	public static List<State> parseState(final List<String> labels, final List<List<Object>> values) {
 		final Map<ExpectedLabels, Integer> map = mapLabels(labels);
 

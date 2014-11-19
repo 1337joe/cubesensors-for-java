@@ -78,11 +78,11 @@ public class CubeSensorsApiV1 {
 		try {
 			/*
 			 * Possible exceptions:
-			 *
+			 * 
 			 * IOException - if the underlying input source has problems during parsing
-			 *
+			 * 
 			 * JsonParseException - if parser has problems parsing content
-			 *
+			 * 
 			 * JsonMappingException - if the parser does not have any more content to map (note: Json "null" value is considered content; enf-of-stream not)
 			 */
 			queryResponse = MAPPER.readValue(response, responseClass);
@@ -127,9 +127,7 @@ public class CubeSensorsApiV1 {
 		return new Device(device, extras);
 	}
 
-	/**
-	 * Queries for the list of accessible devices.
-	 */
+	/** @return the list of accessible devices */
 	public List<Device> getDevices() {
 		final String queryUrl = RESOURCES_ROOT + "devices/";
 		LOGGER.trace("Querying: {}", queryUrl);
@@ -156,7 +154,9 @@ public class CubeSensorsApiV1 {
 	}
 
 	/**
-	 * Queries for the description of a device.
+	 * @param uid
+	 *            the cube id to query for
+	 * @return the description of a device
 	 */
 	public Device getDevice(final String uid) {
 		final String queryUrl = RESOURCES_ROOT + "devices/" + uid;
@@ -179,7 +179,9 @@ public class CubeSensorsApiV1 {
 	}
 
 	/**
-	 * Queries for the current state of a cube.
+	 * @param uid
+	 *            the cube id to query for
+	 * @return the current state of the cube
 	 */
 	public State getCurrent(final String uid) {
 		final String queryUrl = RESOURCES_ROOT + "devices/" + uid + "/current";

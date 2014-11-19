@@ -16,20 +16,61 @@ import com.w3asel.cubesensors.api.v1.format.Temperature;
 public class State {
 	private static final double TO_PERCENT = 1 / 100d;
 
+	/** the time of this state report */
 	public final ZonedDateTime time;
+	/** current temperature (&deg;C * 100) */
 	public final int temp;
+	/** barometric pressure in mbar */
 	public final int pressure;
+	/** relative humidity in % */
 	public final int humidity;
+	/** amount of VOC gases in the air in ppm */
 	public final int voc;
+	/** light level measured in lux */
 	public final int light;
+	/** noise level measured in RMS */
 	public final int noise;
-	// TODO noisedba when it's populated
+	/** currently returns null, but will provide noise measurements in dBA after an upcoming update (TODO when populated) */
+	// public final int noisedba;
+	/** fullness of battery in % */
 	public final int battery;
+	/** indicates whether the Cube has recently been shaken or not */
 	public final boolean shake;
+	/** indicates whether the Cube is on cable and thus charging or not */
 	public final boolean cable;
+	/** raw resistance values from the VOC sensor */
 	public final int vocResistance;
+	/** wireless signal strength indicator (RSSI) */
 	public final int rssi;
 
+	/**
+	 * Creates a fully-populated {@link State}
+	 *
+	 * @param time
+	 *            the time of this state report
+	 * @param temp
+	 *            current temperature (&deg;C * 100)
+	 * @param pressure
+	 *            barometric pressure in mbar
+	 * @param humidity
+	 *            relative humidity in %
+	 * @param voc
+	 *            amount of VOC gases in the air in ppm
+	 * @param light
+	 *            light level measured in lux
+	 * @param noise
+	 *            noise level measured in RMS
+	 * @param battery
+	 *            fullness of battery in %
+	 * @param shake
+	 *            indicates whether the Cube has recently been shaken or not
+	 * @param cable
+	 *            indicates whether the Cube is on cable and thus charging or not
+	 * @param vocResistance
+	 *            raw resistance values from the VOC sensor
+	 * @param rssi
+	 *            wireless signal strength indicator (RSSI)
+	 */
 	public State(final ZonedDateTime time, final int temp, final int pressure, final int humidity, final int voc, final int light, final int noise,
 			final int battery, final boolean shake, final boolean cable, final int vocResistance, final int rssi) {
 		this.time = time;
@@ -46,50 +87,62 @@ public class State {
 		this.rssi = rssi;
 	}
 
+	/** @return the time of this state report */
 	public ZonedDateTime getTime() {
 		return time;
 	}
 
+	/** @return current temperature (&deg;C * 100) */
 	public int getTemp() {
 		return temp;
 	}
 
+	/** @return barometric pressure in mbar */
 	public int getPressure() {
 		return pressure;
 	}
 
+	/** @return relative humidity in % */
 	public int getHumidity() {
 		return humidity;
 	}
 
+	/** @return amount of VOC gases in the air in ppm */
 	public int getVoc() {
 		return voc;
 	}
 
+	/** @return light level measured in lux */
 	public int getLight() {
 		return light;
 	}
 
+	/** @return noise level measured in RMS */
 	public int getNoise() {
 		return noise;
 	}
 
+	/** @return fullness of battery in % */
 	public int getBattery() {
 		return battery;
 	}
 
+	/** @return indicates whether the Cube has recently been shaken or not */
 	public boolean isShake() {
 		return shake;
 	}
 
+	/** @return indicates whether the Cube is on cable and thus charging or not */
 	public boolean isCable() {
 		return cable;
 	}
 
+	/** @return raw resistance values from the VOC sensor */
 	public int getVocResistance() {
 		return vocResistance;
 	}
 
+	/** @return wireless signal strength indicator (RSSI) */
 	public int getRssi() {
 		return rssi;
 	}

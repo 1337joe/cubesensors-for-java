@@ -12,9 +12,13 @@ public class Signal {
 
 	/** values defined by the updateSignal() function in the webapp */
 	enum State {
+		/** very strong signal */
 		FULL("Full", 60),
+		/** strong signal */
 		HIGH("High", 70),
+		/** medium signal */
 		MEDIUM("Medium", 80),
+		/** weak signal */
 		LOW("Low", 150);
 
 		private final String label;
@@ -25,10 +29,12 @@ public class Signal {
 			this.maxValue = maxValue;
 		}
 
+		/** @return the displayable label for this state */
 		public String getLabel() {
 			return label;
 		}
 
+		/** @return the max value that still counts as this state */
 		public int getMaxValue() {
 			return maxValue;
 		}
