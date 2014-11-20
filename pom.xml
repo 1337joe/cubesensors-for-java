@@ -11,6 +11,35 @@
 	<description>A Java library for reading data from the CubeSensors API</description>
 	<url>https://github.com/1337joe/cubesensors-for-java</url>
 
+	<issueManagement>
+		<url>https://github.com/1337joe/cubesensors-for-java/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>https://github.com/1337joe/cubesensors-for-java/blob/master/LICENSE</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>https://github.com/1337joe/cubesensors-for-java</url>
+		<connection>scm:git:https://github.com/1337joe/cubesensors-for-java.git</connection>
+		<developerConnection>scm:git:https://github.com/1337joe/cubesensors-for-java.git</developerConnection>
+	</scm>
+
+	<developers>
+		<developer>
+			<name>Joe Rogers</name>
+			<email>1337joe@gmail.com</email>
+			<timezone>America/Denver</timezone>
+			<id>1337joe</id>
+			<url>http://www.w3asel.com</url>
+		</developer>
+	</developers>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -46,6 +75,7 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j.version}</version>
 			<scope>runtime</scope>
+			<optional>true</optional>
 		</dependency>
 
 		<dependency>
@@ -62,7 +92,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.4</version>
+				<version>3.2</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
