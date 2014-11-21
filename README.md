@@ -32,9 +32,16 @@ List<Device> devices = api.getDevices();
 System.out.print(api.getCurrent(devices.get(0).getUid()));
 ```
 
-##Notes
+##Maven dependency tag (available on Maven Central)
+```xml
+<dependency>
+  <groupId>com.w3asel</groupId>
+  <artifactId>cubesensors-for-java</artifactId>
+  <version>0.9.2</version>
+</dependency>
+```
 
-I'm just starting work on my app that will use this library.  My tests indicate that the library works, but I may make changes for usability as I start using it more if I come across any major issues.
+##Notes
 
 The CubeSensors API is still in development.  As far as I can tell everything in this library currently works, but updates may be needed if the API itself changes.
 

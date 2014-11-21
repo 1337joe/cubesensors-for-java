@@ -2,6 +2,7 @@
 *	**Feature:** added callback url to the properties file and parser
 *	**Bugfix:** fixed handling to not break on unexpected fields
 *	**Feature:** improved documentation coverage and fixed javadoc warnings
+*	**Feature:** available from Maven Central
 
 ## 0.9.1
 *	**Bugfix:** added Accept: application/json request header to clean up API responses
