@@ -10,6 +10,7 @@ import org.junit.Test;
  */
 public class TestPressure {
 
+	/** test converting units to mBar (no conversion required) */
 	@Test
 	public void testToMillibar() {
 		String expected, actual;
@@ -19,6 +20,7 @@ public class TestPressure {
 		Assert.assertEquals(expected, actual);
 	}
 
+	/** test converting to inHg with */
 	@Test
 	public void testToInHg() {
 		String expected, actual;

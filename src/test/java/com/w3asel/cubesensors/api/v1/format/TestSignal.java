@@ -11,6 +11,7 @@ import com.w3asel.cubesensors.api.v1.format.Signal.State;
  * @author Joe
  */
 public class TestSignal {
+	/** test corner cases of the signal strength labels */
 	@Test
 	public void testToRating() {
 		String expected, actual;

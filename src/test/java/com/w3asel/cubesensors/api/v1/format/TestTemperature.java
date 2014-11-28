@@ -9,6 +9,7 @@ import org.junit.Test;
  * @author Joe
  */
 public class TestTemperature {
+	/** test conversion to degrees C */
 	@Test
 	public void testToC() {
 		String expected, actual;
@@ -42,6 +43,7 @@ public class TestTemperature {
 		Assert.assertEquals(expected, actual);
 	}
 
+	/** test conversion to degrees F */
 	@Test
 	public void testToF() {
 		String expected, actual;
