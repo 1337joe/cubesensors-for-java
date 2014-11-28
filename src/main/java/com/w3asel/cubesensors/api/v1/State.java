@@ -29,9 +29,9 @@ public class State {
 	/** light level measured in lux */
 	public final int light;
 	/** noise level measured in RMS */
-	public final int noise;
-	/** currently returns null, but will provide noise measurements in dBA after an upcoming update (TODO when populated) */
-	// public final int noisedba;
+	public final Integer noise;
+	/** noise level measured in dBA */
+	public final Integer noisedba;
 	/** fullness of battery in % */
 	public final int battery;
 	/** indicates whether the Cube has recently been shaken or not */
@@ -60,6 +60,8 @@ public class State {
 	 *            light level measured in lux
 	 * @param noise
 	 *            noise level measured in RMS
+	 * @param noisedba
+	 *            noise level measured in dBA
 	 * @param battery
 	 *            fullness of battery in %
 	 * @param shake
@@ -71,8 +73,8 @@ public class State {
 	 * @param rssi
 	 *            wireless signal strength indicator (RSSI)
 	 */
-	public State(final ZonedDateTime time, final int temp, final int pressure, final int humidity, final int voc, final int light, final int noise,
-			final int battery, final boolean shake, final boolean cable, final int vocResistance, final int rssi) {
+	public State(final ZonedDateTime time, final int temp, final int pressure, final int humidity, final int voc, final int light, final Integer noise,
+			final Integer noisedba, final int battery, final boolean shake, final boolean cable, final int vocResistance, final int rssi) {
 		this.time = time;
 		this.temp = temp;
 		this.pressure = pressure;
@@ -80,6 +82,7 @@ public class State {
 		this.voc = voc;
 		this.light = light;
 		this.noise = noise;
+		this.noisedba = noisedba;
 		this.battery = battery;
 		this.shake = shake;
 		this.cable = cable;
@@ -117,9 +120,14 @@ public class State {
 		return light;
 	}
 
-	/** @return noise level measured in RMS */
-	public int getNoise() {
+	/** @return noise level measured in RMS (may be null) */
+	public Integer getNoise() {
 		return noise;
+	}
+
+	/** @return noise level measured in dBA (may be null) */
+	public Integer getNoisedba() {
+		return noisedba;
 	}
 
 	/** @return fullness of battery in % */
@@ -162,8 +170,14 @@ public class State {
 		sb.append(", ");
 		sb.append(light).append(" lux");
 		sb.append(", ");
-		sb.append(noise).append(" RMS");
-		sb.append(", ");
+		if (noise != null) {
+			sb.append(noise).append(" RMS");
+			sb.append(", ");
+		}
+		if (noisedba != null) {
+			sb.append(noisedba).append(" dBA");
+			sb.append(", ");
+		}
 		sb.append(battery * TO_PERCENT).append(" %");
 		if (shake) {
 			sb.append(", shaken");

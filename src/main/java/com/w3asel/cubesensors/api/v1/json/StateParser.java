@@ -80,12 +80,13 @@ public class StateParser {
 		final Integer voc = (Integer) values.get(map.get(ExpectedLabels.voc));
 		final Integer light = (Integer) values.get(map.get(ExpectedLabels.light));
 		final Integer noise = (Integer) values.get(map.get(ExpectedLabels.noise));
+		final Integer noisedba = (Integer) values.get(map.get(ExpectedLabels.noisedba));
 		final Integer battery = (Integer) values.get(map.get(ExpectedLabels.battery));
 		final Boolean shake = (Boolean) values.get(map.get(ExpectedLabels.shake));
 		final Boolean cable = (Boolean) values.get(map.get(ExpectedLabels.cable));
 		final Integer vocResistance = (Integer) values.get(map.get(ExpectedLabels.voc_resistance));
 		final Integer rssi = (Integer) values.get(map.get(ExpectedLabels.rssi));
-		return new State(time, temp, pressure, humidity, voc, light, noise, battery, shake, cable, vocResistance, rssi);
+		return new State(time, temp, pressure, humidity, voc, light, noise, noisedba, battery, shake, cable, vocResistance, rssi);
 	}
 
 	/**

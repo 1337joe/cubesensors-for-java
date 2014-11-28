@@ -9,9 +9,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * {<br>
  * &nbsp;&nbsp;"ok": true,<br>
  * &nbsp;&nbsp;"results": [<br>
- * &nbsp;&nbsp;&nbsp;&nbsp;["2014-07-31T00:53:00Z", 2249, 802, 46, 2460, 4, 18, 49, false, false, 30290, -62]<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;["2014-07-31T00:53:00Z", 2249, 802, 46, 2460, 4, null, 47, 49, false, false, 30290, -62]<br>
  * &nbsp;&nbsp;],<br>
- * &nbsp;&nbsp;"field_list": ["time", "temp", "pressure", "humidity", "voc", "light", "noise", "battery", "shake", "cable", "voc_resistance", "rssi"]<br>
+ * &nbsp;&nbsp;"field_list": ["time", "temp", "pressure", "humidity", "voc", "light", "noise", "noisedba", "battery", "shake", "cable", "voc_resistance",
+ * "rssi"]<br>
  * }
  */
 public class JsonCurrentResponse {
