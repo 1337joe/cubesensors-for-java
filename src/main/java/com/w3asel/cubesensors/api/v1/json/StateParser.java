@@ -48,17 +48,13 @@ public class StateParser {
 			ExpectedLabels labelValue;
 			try {
 				labelValue = ExpectedLabels.valueOf(next);
-			} catch (final IllegalArgumentException e) {
-				labelValue = null;
-			}
 
-			if (labelValue != null) {
 				unusedLabels.remove(labelValue);
 				if (map.containsKey(labelValue)) {
 					LOGGER.warn("Duplicate state label: {} ({})", next, labels);
 				}
 				map.put(labelValue, index);
-			} else {
+			} catch (final IllegalArgumentException e) {
 				LOGGER.warn("Unexpected state label: {}", next);
 			}
 		}

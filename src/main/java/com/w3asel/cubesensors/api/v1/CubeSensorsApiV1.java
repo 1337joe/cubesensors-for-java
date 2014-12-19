@@ -44,6 +44,7 @@ public class CubeSensorsApiV1 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CubeSensorsApiV1.class);
 
 	private static final String RESOURCES_ROOT = "http://api.cubesensors.com/v1/";
+	private static final String DEVICES_PATH = "devices/";
 	private static final String MEDIA_TYPE_APPLICATION_JSON = "application/json";
 	private static final String HTTP_HEADER_ACCEPT = "Accept";
 
@@ -95,12 +96,12 @@ public class CubeSensorsApiV1 {
 				LOGGER.error("Query returned an error: {}", error);
 				return null;
 			} catch (final IOException e1) {
-				// fall-through to generic response
+				LOGGER.error("Failed to read error response.", e1);
 			}
-			LOGGER.error("Error reading response", e);
+			LOGGER.error("Error reading response.", e);
 			return null;
 		} catch (final IOException e) {
-			LOGGER.error("Error reading response", e);
+			LOGGER.error("Error reading response.", e);
 			return null;
 		}
 
@@ -131,7 +132,7 @@ public class CubeSensorsApiV1 {
 
 	/** @return the list of accessible devices */
 	public List<Device> getDevices() {
-		final String queryUrl = RESOURCES_ROOT + "devices/";
+		final String queryUrl = RESOURCES_ROOT + DEVICES_PATH;
 		LOGGER.trace("Querying: {}", queryUrl);
 
 		final OAuthRequest request = new OAuthRequest(Verb.GET, queryUrl);
@@ -165,7 +166,7 @@ public class CubeSensorsApiV1 {
 	 * @return the description of a device
 	 */
 	public Device getDevice(final String uid) {
-		final String queryUrl = RESOURCES_ROOT + "devices/" + uid;
+		final String queryUrl = RESOURCES_ROOT + DEVICES_PATH + uid;
 		LOGGER.trace("Querying: {}", queryUrl);
 
 		final OAuthRequest request = new OAuthRequest(Verb.GET, queryUrl);
@@ -194,7 +195,7 @@ public class CubeSensorsApiV1 {
 	 * @return the current state of the cube
 	 */
 	public State getCurrent(final String uid) {
-		final String queryUrl = RESOURCES_ROOT + "devices/" + uid + "/current";
+		final String queryUrl = RESOURCES_ROOT + DEVICES_PATH + uid + "/current";
 		LOGGER.trace("Querying: {}", queryUrl);
 
 		final OAuthRequest request = new OAuthRequest(Verb.GET, queryUrl);
@@ -234,7 +235,7 @@ public class CubeSensorsApiV1 {
 	 * @return a list of all states returned by the API
 	 */
 	public List<State> getSpan(final String uid, final ZonedDateTime start, final ZonedDateTime end, final Integer resolution) {
-		final String queryUrl = RESOURCES_ROOT + "devices/" + uid + "/span";
+		final String queryUrl = RESOURCES_ROOT + DEVICES_PATH + uid + "/span";
 		LOGGER.trace("Querying: {}", queryUrl);
 
 		final OAuthRequest request = new OAuthRequest(Verb.GET, queryUrl);
@@ -270,7 +271,7 @@ public class CubeSensorsApiV1 {
 
 		final List<State> states = StateParser.parseState(queryResponse.fieldList, queryResponse.results);
 
-		LOGGER.debug("Retrieved {} states", states.size());
+		LOGGER.debug("Retrieved {} states.", states.size());
 
 		return states;
 	}
