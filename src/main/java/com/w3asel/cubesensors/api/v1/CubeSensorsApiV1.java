@@ -140,6 +140,10 @@ public class CubeSensorsApiV1 {
 		final Response response = request.send();
 		LOGGER.trace("Response: {}", response.getBody());
 
+		if (!response.isSuccessful()) {
+			throw new CubeSensorsException(response.getBody());
+		} 
+		
 		final JsonDevicesResponse queryResponse = parseQuery(response.getBody(), JsonDevicesResponse.class);
 		if (queryResponse == null) {
 			return new ArrayList<>();
@@ -170,6 +174,10 @@ public class CubeSensorsApiV1 {
 		final Response response = request.send();
 		LOGGER.trace("Response: {}", response.getBody());
 
+		if (!response.isSuccessful()) {
+			throw new CubeSensorsException(response.getBody());
+		} 
+		
 		final JsonDeviceResponse queryResponse = parseQuery(response.getBody(), JsonDeviceResponse.class);
 		if (queryResponse == null) {
 			return null;
@@ -195,6 +203,10 @@ public class CubeSensorsApiV1 {
 		final Response response = request.send();
 		LOGGER.trace("Response: {}", response.getBody());
 
+		if (!response.isSuccessful()) {
+			throw new CubeSensorsException(response.getBody());
+		}
+		
 		final JsonCurrentResponse queryResponse = parseQuery(response.getBody(), JsonCurrentResponse.class);
 		if (queryResponse == null) {
 			return null;
@@ -247,6 +259,10 @@ public class CubeSensorsApiV1 {
 		final Response response = request.send();
 		LOGGER.trace("Response: {}", response.getBody());
 
+		if (!response.isSuccessful()) {
+			throw new CubeSensorsException(response.getBody());
+		}
+		
 		final JsonSpanResponse queryResponse = parseQuery(response.getBody(), JsonSpanResponse.class);
 		if (queryResponse == null) {
 			return new ArrayList<>();
