@@ -108,9 +108,7 @@ public class CubeSensorsApiV1 {
 		return queryResponse;
 	}
 
-	/**
-	 * Converts the {@link JsonDevice} object into a {@link Device} and logs any missing/extra fields to debug.
-	 */
+	/** Converts the {@link JsonDevice} object into a {@link Device} and logs any missing/extra fields to debug. */
 	private Device extractDevice(final JsonDevice device) {
 		final Map<ExtraMapping, String> extras = new EnumMap<>(ExtraMapping.class);
 		final Set<String> keys = new HashSet<>(device.extra.keySet());
@@ -130,7 +128,11 @@ public class CubeSensorsApiV1 {
 		return new Device(device, extras);
 	}
 
-	/** @return the list of accessible devices */
+	/**
+	 * @return the list of accessible devices
+	 * @throws CubeSensorsException
+	 *             when a request fails
+	 **/
 	public List<Device> getDevices() {
 		final String queryUrl = RESOURCES_ROOT + DEVICES_PATH;
 		LOGGER.trace("Querying: {}", queryUrl);
@@ -143,8 +145,8 @@ public class CubeSensorsApiV1 {
 
 		if (!response.isSuccessful()) {
 			throw new CubeSensorsException(response.getBody());
-		} 
-		
+		}
+
 		final JsonDevicesResponse queryResponse = parseQuery(response.getBody(), JsonDevicesResponse.class);
 		if (queryResponse == null) {
 			return new ArrayList<>();
@@ -164,6 +166,8 @@ public class CubeSensorsApiV1 {
 	 * @param uid
 	 *            the cube id to query for
 	 * @return the description of a device
+	 * @throws CubeSensorsException
+	 *             when a request fails
 	 */
 	public Device getDevice(final String uid) {
 		final String queryUrl = RESOURCES_ROOT + DEVICES_PATH + uid;
@@ -177,8 +181,8 @@ public class CubeSensorsApiV1 {
 
 		if (!response.isSuccessful()) {
 			throw new CubeSensorsException(response.getBody());
-		} 
-		
+		}
+
 		final JsonDeviceResponse queryResponse = parseQuery(response.getBody(), JsonDeviceResponse.class);
 		if (queryResponse == null) {
 			return null;
@@ -193,6 +197,8 @@ public class CubeSensorsApiV1 {
 	 * @param uid
 	 *            the cube id to query for
 	 * @return the current state of the cube
+	 * @throws CubeSensorsException
+	 *             when a request fails
 	 */
 	public State getCurrent(final String uid) {
 		final String queryUrl = RESOURCES_ROOT + DEVICES_PATH + uid + "/current";
@@ -207,7 +213,7 @@ public class CubeSensorsApiV1 {
 		if (!response.isSuccessful()) {
 			throw new CubeSensorsException(response.getBody());
 		}
-		
+
 		final JsonCurrentResponse queryResponse = parseQuery(response.getBody(), JsonCurrentResponse.class);
 		if (queryResponse == null) {
 			return null;
@@ -233,6 +239,8 @@ public class CubeSensorsApiV1 {
 	 * @param resolution
 	 *            the resolution in minutes
 	 * @return a list of all states returned by the API
+	 * @throws CubeSensorsException
+	 *             when a request fails
 	 */
 	public List<State> getSpan(final String uid, final ZonedDateTime start, final ZonedDateTime end, final Integer resolution) {
 		final String queryUrl = RESOURCES_ROOT + DEVICES_PATH + uid + "/span";
@@ -263,7 +271,7 @@ public class CubeSensorsApiV1 {
 		if (!response.isSuccessful()) {
 			throw new CubeSensorsException(response.getBody());
 		}
-		
+
 		final JsonSpanResponse queryResponse = parseQuery(response.getBody(), JsonSpanResponse.class);
 		if (queryResponse == null) {
 			return new ArrayList<>();

@@ -1,30 +1,34 @@
 package com.w3asel.cubesensors.api.v1;
 
+/**
+ * Runtime exception to be thrown by the CubeSensors API.
+ *
+ * @author Silviu Marcu
+ */
 public class CubeSensorsException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
-
+	/** @see RuntimeException#RuntimeException() */
 	public CubeSensorsException() {
 		super();
 	}
 
-	public CubeSensorsException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
+	/** @see RuntimeException#RuntimeException(String, Throwable, boolean, boolean) */
+	public CubeSensorsException(final String message, final Throwable cause, final boolean enableSuppression, final boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
-	public CubeSensorsException(String message, Throwable cause) {
+	/** @see RuntimeException#RuntimeException(String, Throwable) */
+	public CubeSensorsException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public CubeSensorsException(String message) {
+	/** @see RuntimeException#RuntimeException(String) */
+	public CubeSensorsException(final String message) {
 		super(message);
 	}
 
-	public CubeSensorsException(Throwable cause) {
+	/** @see RuntimeException#RuntimeException(Throwable) */
+	public CubeSensorsException(final Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
-
-	
 }
