@@ -1,5 +1,7 @@
 ## 0.9.3
 *	**Bugfix:** updates to match changed API noise reporting
+*	**Bugfix:** null-safe parsing
+*	**Bugfix:** throws exception on unsuccessful queries
 
 ## 0.9.2
 *	**Feature:** added callback url to the properties file and parser

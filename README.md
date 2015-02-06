@@ -37,7 +37,7 @@ System.out.print(api.getCurrent(devices.get(0).getUid()));
 <dependency>
   <groupId>com.w3asel</groupId>
   <artifactId>cubesensors-for-java</artifactId>
-  <version>0.9.2</version>
+  <version>0.9.3</version>
 </dependency>
 ```
 
