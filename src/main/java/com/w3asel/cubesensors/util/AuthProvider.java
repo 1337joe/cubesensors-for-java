@@ -15,7 +15,7 @@ public interface AuthProvider {
 
 	/**
 	 * Get the authorization token using the authorizationUrl
-	 * @param authorizationUrl
+	 * @param authorizationUrl the authorizationUrl used to get the authorization token
 	 * @return the token
 	 * @throws CubeSensorsException if cannot obtain authorization
 	 */

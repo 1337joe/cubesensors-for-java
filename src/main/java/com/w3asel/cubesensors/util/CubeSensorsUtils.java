@@ -5,6 +5,8 @@ import org.scribe.model.SignatureType;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.w3asel.cubesensors.CubeSensorsProperties;
 import com.w3asel.cubesensors.api.v1.CubeSensorsApiV1;
@@ -39,9 +41,28 @@ import com.w3asel.cubesensors.auth.CubeSensorsAuthApi;
  */
 public class CubeSensorsUtils {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(CubeSensorsUtils.class);
+
 	private AuthPersistence authPersistence;
 	private AuthProvider authProvider;
 
+	/**
+	 * Creates a new util object 
+	 * @param authPersistence the {@link AuthPersistence} implementation to be used in the util object
+	 * @param authProvider the {@link AuthProvider} implementation to be used in the util object
+	 */
+	public CubeSensorsUtils(AuthPersistence authPersistence, AuthProvider authProvider) {
+		this.authPersistence = authPersistence;
+		this.authProvider = authProvider;
+	}
+	
+	/**
+	 * Obtain an access token. If previously a token was created and persisted
+	 * will be returned after validation (a real call is made to validate).
+	 * <p>If no token previously persisted, the method will create a new token using
+	 * the authentication provider (AuthProvider)
+	 * @return the access token.
+	 */
 	public Token getAccessToken() {
 
 		Token accessToken = authPersistence.getToken();
@@ -86,26 +107,37 @@ public class CubeSensorsUtils {
 			return true;
 		} catch (CubeSensorsException e) {
 			if (e.getMessage().contains("401")) {
-        		System.out.println("Unauthorized, reauthorizing");
+				LOGGER.error("Unauthorized, reauthorizing");
         	} else {
-        		e.printStackTrace();
+        		LOGGER.error("cannot validate request token", e);
         	}
 			return false;
 		}
 	}
 
+	/**
+	 * Inject an AuthPersistence implementation.
+	 * @param authPersistence the implementation to be injected
+	 */
 	public void setAuthPersistence(AuthPersistence authPersistence) {
 		this.authPersistence = authPersistence;
 	}
 
+	/**
+	 * Inject an AuthProvider implementation
+	 * @param authProvider the implementation object
+	 */
 	public void setAuthProvider(AuthProvider authProvider) {
 		this.authProvider = authProvider;
 	}
 
+	/**
+	 * Creates a new instance of {@link CubeSensorsUtils} using {@link PrefAuthPersistence}
+	 * as {@link AuthPersistence} and {@link ConsoleAuthProvider} as {@link AuthProvider}
+	 * @return the assembled utils object
+	 */
 	public static CubeSensorsUtils instance() {
-		CubeSensorsUtils utils = new CubeSensorsUtils();
-		utils.setAuthPersistence(new PrefAuthPersistence());
-		utils.setAuthProvider(new ConsoleAuthProvider());
+		CubeSensorsUtils utils = new CubeSensorsUtils(new PrefAuthPersistence(), new ConsoleAuthProvider());
 		return utils;
 	}
 }

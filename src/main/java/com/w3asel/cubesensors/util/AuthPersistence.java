@@ -11,13 +11,13 @@ public interface AuthPersistence {
 
 	/**
 	 * saves a request token
-	 * @param token
+	 * @param token the request token to be saved
 	 */
 	void saveToken(Token token);
 	
 	/**
 	 * get the persisted token (null if not set)
-	 * @return
+	 * @return the persisted token (null if not set)
 	 */
 	Token getToken();
 	
