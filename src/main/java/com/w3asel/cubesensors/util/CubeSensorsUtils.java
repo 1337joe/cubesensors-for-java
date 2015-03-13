@@ -99,20 +99,22 @@ public class CubeSensorsUtils {
 	}
 
 	private boolean isTokenValid(Token token) {
-		// try a real call to verify the access
-		CubeSensorsApiV1 api = new CubeSensorsApiV1(token);
-		// throws CubeSensorsException if not authorized
-		try {
-			api.getDevices();
-			return true;
-		} catch (CubeSensorsException e) {
-			if (e.getMessage().contains("401")) {
-				LOGGER.error("Unauthorized, reauthorizing", e);
-        	} else {
-        		LOGGER.error("cannot validate request token", e);
-        	}
-			return false;
+		if (token != null) {
+			// try a real call to verify the access
+			CubeSensorsApiV1 api = new CubeSensorsApiV1(token);
+			// throws CubeSensorsException if not authorized
+			try {
+				api.getDevices();
+				return true;
+			} catch (CubeSensorsException e) {
+				if (e.getMessage().contains("401")) {
+					LOGGER.error("Unauthorized, reauthorizing", e);
+	        	} else {
+	        		LOGGER.error("cannot validate request token", e);
+	        	}
+			}
 		}
+		return false;
 	}
 
 	/**
